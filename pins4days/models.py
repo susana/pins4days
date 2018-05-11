@@ -20,3 +20,11 @@ class Pin(ndb.Model):
     created_ts = ndb.IntegerProperty('cts')
     attachments = ndb.StructuredProperty(Attachment, name='a', repeated=True)
     attachments_ts = ndb.StringProperty('ats') # ts along with the channel idcan be used to recreate the permalink
+
+    @classmethod
+    def query_user(cls, user_id):
+        return cls.query(getattr(Pin, 'author_id') == user_id).order(-cls.created_ts)
+
+    @classmethod
+    def query_all(cls):
+        return cls.query().order(-cls.created_ts)
