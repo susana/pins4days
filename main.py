@@ -12,12 +12,12 @@ from lib.werkzeug.urls import Href
 
 from pins4days.utils import load_config
 from pins4days.event import PinEvent
+from pins4days.constants import SLACK_OAUTH_URL
+from pins4days.constants import SLACK_AUTH_URL
 
 
 app = Flask(__name__)
 app.config.update(load_config())
-SLACK_OAUTH_URL = "https://slack.com/api/oauth.access"
-SLACK_AUTH_URL = "https://slack.com/oauth/authorize"
 
 
 @app.before_request
