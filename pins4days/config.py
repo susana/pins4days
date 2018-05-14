@@ -38,8 +38,8 @@ class AppConfig(object):
         """Writes the local config file to GCS if this is executed on the local
         development server, and then loads the remote config file from GCS.
         """
-        self._write_local_config()
         self._build_config_filename()
+        self._write_local_config()
         self._load_config()
 
     def _load_config(self):
