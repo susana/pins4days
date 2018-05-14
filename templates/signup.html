@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Sign Up</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+  </head>
+  <body>
+    <div id="container">
+      <div class="pagetitle">
+        <h1>sign up to see pins</h1>
+      </div>
+      <div id="main">
+        <form method="POST" action="{{ url_for('signup') }}">
+          <label for="username">username:</label>
+          <input type="text" name="username"><br />
+          <label for="password">password:</label>
+          <input type="text" name="password">
+          <input type="submit">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

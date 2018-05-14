@@ -1,0 +1,12 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.pagetitle {
+    color: #800080;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.pin-container img {
+  width: 300px;
+}

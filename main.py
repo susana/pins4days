@@ -2,23 +2,90 @@
 
 import logging
 
-import requests
 from flask import Flask
 from flask import request
 from flask import jsonify
 from flask import redirect
 from flask import make_response
-from lib.werkzeug.urls import Href
+from flask import url_for
+from flask import render_template
+from flask_login import login_user
+from flask_login import LoginManager
+from flask_login import login_required
+from flask_login import current_user
 
 from pins4days.utils import load_config
+from pins4days.utils import set_session_configs
 from pins4days.event import PinEvent
 from pins4days.models import Pin
-from pins4days.constants import SLACK_OAUTH_URL
-from pins4days.constants import SLACK_AUTH_URL
+from pins4days.models import User
+from pins4days.models import EntityDoesNotExist
+from pins4days.models import IncorrectPassword
+from pins4days.user import AppUser
 
 
 app = Flask(__name__)
-app.config.update(load_config())
+config = load_config()
+app.config.update(config['flask_app_config'])
+set_session_configs(app, config)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(username):
+    user = User.get_by_id(username)
+    return AppUser(user) if user else None
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('pins'))
+
+    if request.method == 'GET':
+        return render_template('signup.html')
+
+    username = request.form['username']
+    password = request.form['password']
+
+    User.init_with_encryption(id=username, password=password)
+    return redirect(url_for('login'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    return handle_login_post(request)
+
+
+def handle_login_post(request):
+    if not validate_form(request.form):
+        return make_response(render_template('login.html', error='E_BAD_FORM'), 400)
+
+    try:
+        user = User.login(request.form['username'], request.form['password'])
+        app_user = AppUser(user)
+        if app_user:
+            login_user(app_user)
+            return redirect(url_for('pins'), 302)
+    except EntityDoesNotExist as e:
+        return make_response(render_template('login.html', error='E_ENTITY_DOES_NOT_EXIST'), 404)
+    except IncorrectPassword as e:
+        return make_response(render_template('login.html', error='E_INCORRECT_PASSWORD'), 404)
+
+
+def validate_form(form):
+    return (form['username'].replace(' ', '') and form['username'] is not None and
+        form['password'].replace(' ', '') and form['password'] is not None)
+
+
+@app.route('/pins', methods=['GET'])
+@login_required
+def pins():
+    return render_template('pins.html')
 
 
 @app.route('/api/pins', methods=['POST', 'GET'])
@@ -59,3 +126,9 @@ def handle_api_pins_get(request):
         }
     }
     return jsonify(response)
+
+
+def validate_form(form):
+    return (form['username'].replace(' ', '') and form['username'] is not None and
+        form['password'].replace(' ', '') and form['password'] is not None)
+

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Login</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+  </head>
+  <body>
+    <div id="container">
+      <div class="pagetitle">
+        <h1>log in for pins</h1>
+      </div>
+      <div id="main">
+        {% if error == "E_ENTITY_DOES_NOT_EXIST" %}
+        <p>That username doesn't exist.</p>
+        {% elif error == "E_INCORRECT_PASSWORD" %}
+        <p>Password is wrong.</p>
+        {% elif error == "E_BAD_FORM" %}
+        <p>Empty usernames and passwords ain't allowed!</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('login') }}">
+          <label for="username">username:</label>
+          <input type="text" name="username"><br />
+          <label for="password">password:</label>
+          <input type="text" name="password">
+          <input type="submit">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
