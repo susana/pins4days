@@ -1,16 +1,32 @@
 <html>
-  <head>
-    <title>pins</title>
+ <head>
+   <title>Pins 4 Days</title>
    <link rel="stylesheet" type="text/css" href="/static/style.css">
-  </head>
-  <body>
-    <div id="container">
-      <div class="pagetitle">
-        <h1>pins</h1>
-      </div>
-      <div id="main">
-        hay
-      </div>
-    </div>
-  </body>
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Mono" rel="stylesheet">
+ </head>
+ <body>
+   <div id="container">
+     <div class="pagetitle">
+       <h1>Pins 4 Days</h1>
+     </div>
+     <ul id="main" class="pin-container">
+      <h3>Hay {{ username }}.</h3>
+      {% for pin in pins %}
+        <li>
+          {# <p>{{ pin.author_id }}: {{ pin.text }}</p> #}
+          {# <p>pinned by {{ pin.author_id }}</p> #}
+          <p>in channel {{ pin.channel_id }}</p>
+          <ul>
+            {% for attachment in pin.attachments %}
+            <li>
+              <p>{{ attachment.text }}</p>
+              <p><img src="{{ attachment.image_url }}"></p>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+     </ul>
+   </div>
+ </body>
 </html>

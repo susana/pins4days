@@ -85,7 +85,8 @@ def validate_form(form):
 @app.route('/pins', methods=['GET'])
 @login_required
 def pins():
-    return render_template('pins.html')
+    username = current_user.username
+    return render_template('pins.html', username=username, pins=Pin.query_all())
 
 
 @app.route('/api/pins', methods=['POST', 'GET'])
@@ -118,7 +119,7 @@ def handle_api_pins_get(request):
     if user_id:
         pins = Pin.query_user(user_id).fetch(10)
     else:
-        pins = Pin.query_all()
+        pins = Pin.query_all().fetch(10)
 
     response = {
         'data': {
