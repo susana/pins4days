@@ -5,3 +5,6 @@ GCS_CONFIG_KEY_REMOTE = "configs/pins4days.yaml"
 
 SLACK_OAUTH_URL = "https://slack.com/api/oauth.access"
 SLACK_AUTH_URL = "https://slack.com/oauth/authorize"
+
+KEY_FLASK_APP_CONFIG = 'flask_app_config'
+KEY_FLASK_SECRET_KEY = 'flask_secret_key'

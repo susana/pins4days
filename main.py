@@ -13,9 +13,11 @@ from flask_login import login_user
 from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user
+from werkzeug.contrib.cache import MemcachedCache
 
+from pins4days.constants import KEY_FLASK_APP_CONFIG
+from pins4days.constants import KEY_FLASK_SECRET_KEY
 from pins4days.utils import load_config
-from pins4days.utils import set_session_configs
 from pins4days.event import PinEvent
 from pins4days.models import Pin
 from pins4days.models import User
@@ -26,8 +28,10 @@ from pins4days.user import AppUser
 
 app = Flask(__name__)
 config = load_config()
-app.config.update(config['flask_app_config'])
-set_session_configs(app, config)
+app.config.update(config[KEY_FLASK_APP_CONFIG])
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SESSION_MEMCACHED'] = MemcachedCache()
+app.secret_key = config[KEY_FLASK_SECRET_KEY]
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -55,6 +59,9 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('pins'))
+
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -63,7 +70,8 @@ def login():
 
 def handle_login_post(request):
     if not validate_form(request.form):
-        return make_response(render_template('login.html', error='E_BAD_FORM'), 400)
+        return make_response(
+            render_template('login.html', error='E_BAD_FORM'), 400)
 
     try:
         user = User.login(request.form['username'], request.form['password'])
@@ -72,9 +80,11 @@ def handle_login_post(request):
             login_user(app_user)
             return redirect(url_for('pins'), 302)
     except EntityDoesNotExist as e:
-        return make_response(render_template('login.html', error='E_ENTITY_DOES_NOT_EXIST'), 404)
+        return make_response(
+            render_template('login.html', error='E_ENTITY_DOES_NOT_EXIST'), 404)
     except IncorrectPassword as e:
-        return make_response(render_template('login.html', error='E_INCORRECT_PASSWORD'), 404)
+        return make_response(
+            render_template('login.html', error='E_INCORRECT_PASSWORD'), 400)
 
 
 def validate_form(form):
@@ -86,7 +96,10 @@ def validate_form(form):
 @login_required
 def pins():
     username = current_user.username
-    return render_template('pins.html', username=username, pins=Pin.query_all())
+    return render_template(
+        'pins.html',
+        username=username,
+        pins=Pin.query_all())
 
 
 @app.route('/api/pins', methods=['POST', 'GET'])
@@ -110,8 +123,8 @@ def handle_api_pins_post(request):
         challenge = json['challenge']
         return jsonify(challenge=challenge)
 
-    pin_event = PinEvent.factory(json)
-    return make_response("", 201)
+    PinEvent.factory(json)
+    return make_response('', 201)
 
 
 def handle_api_pins_get(request):
@@ -127,9 +140,3 @@ def handle_api_pins_get(request):
         }
     }
     return jsonify(response)
-
-
-def validate_form(form):
-    return (form['username'].replace(' ', '') and form['username'] is not None and
-        form['password'].replace(' ', '') and form['password'] is not None)
-
