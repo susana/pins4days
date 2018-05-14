@@ -1,4 +1,29 @@
 # -*- coding: utf-8 -*-
+"""Entry point for the Pins4Days app that runs on Google App Engine (standard).
+
+This app utilizes:
+- Flask framework
+- flask-login for user session management
+- NDB client library for connecting to Google Cloud Datastore (NoSQL!), and
+storing pins and user info.
+- Google Cloud Storage (GCS) for storing configs
+- Memcache for session storage
+
+Attributes:
+    app (obj): Flask app.
+    config (AppConfig): An object that handles reading in configs from GCS.
+    These configs are inserted into app.config and made available to the Flask
+    app.
+    login_manager (LoginManager): User session manager.
+
+Todo:
+    * Handle duplicate user creation in signup().
+    * Investigate possible exceptions for User creation and add exception
+    handling to signup().
+    * Handle pagination, aka return more than 10 pins from the /pins view and
+    /api/pins endpoint!
+    * Read in existing pins and store them.
+"""
 
 import logging
 
@@ -38,12 +63,32 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(username):
+    """Loads a User model instance based on their unique username.
+
+    Args:
+        username (str): The user's username which they created upon sign up.
+
+    Returns:
+        AppUser or None: Returns an AppUser if the User exists in the DB.
+        Returns None if the user does not exist.
+    """
     user = User.get_by_id(username)
     return AppUser(user) if user else None
 
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
+    """Handles user sign up. This requires that the user create a unique
+    username, and a password.
+
+    If the user is already logged in, redirect them to the main /pins page.
+    If the user is not logged in, show them the signup form.
+    If they've submitted the signup form, create a new user, and then redirect
+    them to the /login page.
+
+    Returns:
+        Response: See flow described above.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('pins'))
 
@@ -59,6 +104,15 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Logs in user, creating a session in memcache.
+
+    If the user is already logged in, redirect them the /pins page.
+    If the user is not logged in, show them the login form. See
+    handle_login_post() for more details on this step..
+
+    Returns:
+        Response: See flow described above.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('pins'))
 
@@ -69,6 +123,24 @@ def login():
 
 
 def handle_login_post(request):
+    """Validates user form data and logs in user.
+
+    If the form is submitted with invalid inputs, show the error template.
+    If the user attempts to log in as a user that does not exist, show the error
+    template.
+    If the user attempts to log in with an existing username and incorrect
+    password, show the error template.
+    Otherwise, if the form was valid and the username exists with the correct
+    password submitted, that user is logged in, and redirected to the /pins
+    page.
+
+
+    Args:
+        request (Request): HTTP request.
+
+    Returns:
+        Response:
+    """
     if not validate_form(request.form):
         return make_response(
             render_template('login.html', error='E_BAD_FORM'), 400)
@@ -88,6 +160,15 @@ def handle_login_post(request):
 
 
 def validate_form(form):
+    """Executes simple form validation. Checks for None or empty string values.
+
+    Args:
+        form (MultiDict): The form data that was POST'd.
+
+    Returns:
+        bool: If username or password contain None or empty strings, False is
+        returned. Otherwise, True is returned.
+    """
     return (form['username'].replace(' ', '') and form['username'] is not None and
         form['password'].replace(' ', '') and form['password'] is not None)
 
@@ -95,15 +176,27 @@ def validate_form(form):
 @app.route('/pins', methods=['GET'])
 @login_required
 def pins():
+    """Renders the /pins page template.
+
+    Returns:
+        TYPE: Description
+    """
     username = current_user.username
     return render_template(
         'pins.html',
         username=username,
-        pins=Pin.query_all())
+        pins=Pin.query_all().fetch(10))
 
 
 @app.route('/api/pins', methods=['POST', 'GET'])
 def api_pins():
+    """Fetches or creates Pins.
+
+    See handle_api_pins_post() and handle_api_pins_get() for more details.
+
+    Returns:
+        Response:
+    """
     if request.method == 'POST':
         return handle_api_pins_post(request)
     elif request.method == 'GET':
@@ -111,6 +204,19 @@ def api_pins():
 
 
 def handle_api_pins_post(request):
+    """Handles POST requests to /api/pins.
+
+    If the JSON POST request body contains the 'challenge' or 'token' keys,
+    perform Slack's URL verification handshake. For more details, see:
+    https://api.slack.com/events-api#url_verification.
+    Otherwise, create a Pin (and its attachments).
+
+    Args:
+        request (Request):
+
+    Returns:
+        Response:
+    """
     json = request.get_json()
     if ('token' not in json or
         json['token'] != app.config['slack_verification_token']):
@@ -128,6 +234,17 @@ def handle_api_pins_post(request):
 
 
 def handle_api_pins_get(request):
+    """Handles GET requests to /api/pins.
+
+    If 'user_id' query param is set, pins for that user are returned.
+    Otherwise, the most recently pinned messages are returned.
+
+    Args:
+        request (Request):
+
+    Returns:
+        Response:
+    """
     user_id = request.args.get('user_id')
     if user_id:
         pins = Pin.query_user(user_id).fetch(10)
