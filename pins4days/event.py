@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from models import Pin
-from models import Attachment
+from models.pin import Pin
+from models.attachment import Attachment
 
 
 class PinnedMessage(object):

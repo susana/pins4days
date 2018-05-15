@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from models import User
+from models.user import User
 from flask_login.mixins import UserMixin
 
 
