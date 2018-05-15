@@ -5,7 +5,7 @@ from models import Pin
 from models import Attachment
 
 
-class PinEvent(object):
+class PinnedMessage(object):
     @staticmethod
     def factory(event):
         message = event['event']['item']['message']

@@ -43,7 +43,7 @@ from werkzeug.contrib.cache import MemcachedCache
 from pins4days.constants import KEY_FLASK_APP_CONFIG
 from pins4days.constants import KEY_FLASK_SECRET_KEY
 from pins4days.utils import load_config
-from pins4days.event import PinEvent
+from pins4days.event import PinnedMessage
 from pins4days.models import Pin
 from pins4days.models import User
 from pins4days.models import EntityDoesNotExist
@@ -229,7 +229,7 @@ def handle_api_pins_post(request):
         challenge = json['challenge']
         return jsonify(challenge=challenge)
 
-    PinEvent.factory(json)
+    PinnedMessage.factory(json)
     return make_response('', 201)
 
 
