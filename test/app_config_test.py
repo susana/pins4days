@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import mock
-import os
 
-from google.appengine.api import app_identity
 from google.appengine.ext import testbed
 
 from pins4days.config import AppConfig
 from pins4days.constants import GCS_CONFIG_KEY_REMOTE
-from pins4days.constants import GCS_CONFIG_KEY_LOCAL
 
 
 class AppConfigTestCase(unittest.TestCase):
