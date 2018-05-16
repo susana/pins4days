@@ -1,3 +1,11 @@
+### Tests
+
+From the root dir:
+
+```shell
+python runner.py /usr/local/opt/google-cloud-sdk/ --test-path=test
+```
+
 ### TODO
 
 I know, there's a lot that can be improved. I'll get to it one day.
