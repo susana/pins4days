@@ -3,6 +3,9 @@
 
 from config import AppConfig
 
+from pins4days.constants import GCS_CONFIG_KEY_REMOTE
+from pins4days.constants import GCS_CONFIG_KEY_LOCAL
+
 
 def load_config():
     """Loads in the Pins4Days config.
@@ -10,6 +13,6 @@ def load_config():
     Returns:
         dict: The Pins4Days config contents.
     """
-    config = AppConfig()
+    config = AppConfig(GCS_CONFIG_KEY_REMOTE, GCS_CONFIG_KEY_LOCAL)
     config.load_config()
     return config.contents

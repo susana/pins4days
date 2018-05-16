@@ -1,0 +1,5 @@
+flask_app_config:
+  slack_client_id: "1838492.4948"
+  slack_client_secret: "d077f244def8a70e5ea758bd8352f"
+  slack_verification_token: "6da89cd09ab7937478a1d47d"
+flask_secret_key: "5ebe2294ecd0e0f08eab76"
