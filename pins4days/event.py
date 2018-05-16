@@ -5,7 +5,7 @@ pinsdays.models.pin.Attachment.
 
 import logging
 from models.pin import Pin
-from models.attachment import Attachment
+from models.pin import Attachment
 
 
 class PinnedMessage(object):
