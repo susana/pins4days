@@ -23,6 +23,7 @@ Todo:
     * Handle pagination, aka return more than 10 pins from the /pins view and
     /api/pins endpoint!
     * Read in existing pins and store them.
+    * Add auth to GET /api/pins.
 """
 
 import logging
