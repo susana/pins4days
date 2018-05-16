@@ -1,0 +1,36 @@
+{
+    "event_time": 1525827355,
+    "api_app_id": "api-app-id-0",
+    "event_id": "event-id-2",
+    "authed_users": ["authed-user-0"],
+    "team_id": "team-id-0",
+    "token": "token-1",
+    "type": "event_callback",
+    "event": {
+        "item": {
+            "message": {
+                "permalink": "https://bobross.fake-slack.com/archives/pinned-to-0/p1525813275000339",
+                "text": "How do you make a round circle with a square knife? That's your challenge for the day.",
+                "ts": "1525813275.000339",
+                "pinned_to": ["pinned-to-0"],
+                "user": "user-0",
+                "type": "message"
+            },
+            "type": "message",
+            "created_by": "authed-user-0",
+            "channel": "pinned-to-0",
+            "created": 1525827355
+        },
+        "event_ts": "1525827355.000259",
+        "pin_count": 47,
+        "pinned_info": {
+            "pinned_ts": 1525827355,
+            "channel": "pinned-to-0",
+            "pinned_by": "authed-user-0"
+        },
+        "channel_id": "pinned-to-0",
+        "user": "authed-user-0",
+        "item_user": "user-0",
+        "type": "pin_added"
+    }
+}

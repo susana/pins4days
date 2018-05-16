@@ -1,0 +1,59 @@
+{
+  "api_app_id": "api-app-id-0",
+  "authed_users": ["authed-user-0"],
+  "event": {
+    "channel_id": "channel-id-0",
+    "event_ts": "1525829853.000190",
+    "item": {
+      "channel": "channel-id-0",
+      "created": 1525829853,
+      "created_by": "authed-user-0",
+      "message": {
+        "attachments": [
+          {
+            "fallback": "Medium: Less Repetition, More Dynamic Programming – basecs – Medium",
+            "fields": [
+              {
+                "short": true,
+                "title": "Reading time",
+                "value": "17 min read"
+              }
+            ],
+            "from_url": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "id": 1,
+            "image_bytes": 107733,
+            "image_height": 250,
+            "image_url": "https://cdn-images-1.medium.com/max/1200/1*Y1IuqrkoDWLlfz_BSaesGQ.jpeg",
+            "image_width": 500,
+            "original_url": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "service_icon": "https://cdn-images-1.medium.com/fit/c/304/304/1*5znAu_8mFN8Ihl4C2S0Bxw.jpeg",
+            "service_name": "Medium",
+            "text": "One of the running themes throughout this series has been the idea of making large, complex problems, which at first may seem super \u2026",
+            "title": "Less Repetition, More Dynamic Programming – basecs – Medium",
+            "title_link": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "ts": 1508862529
+          }
+        ],
+        "permalink": "https://bobross.fake-slack.com/channel-id-0/p1525829847000217",
+        "pinned_to": ["channel-id-0"],
+        "text": "<https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630>",
+        "ts": "1525829847.000217",
+        "type": "message",
+        "user": "authed-user-0"
+      },
+      "type": "message"
+    },
+    "item_user": "authed-user-0",
+    "pin_count": 3,
+    "pinned_info": {"channel": "channel-id-0",
+                   "pinned_by": "authed-user-0",
+                   "pinned_ts": 1525829853},
+    "type": "pin_added",
+    "user": "authed-user-0"
+  },
+  "event_id": "event-id-1",
+  "event_time": 1525829853,
+  "team_id": "team-id-0",
+  "token": "token-1",
+  "type": "event_callback"
+}

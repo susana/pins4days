@@ -1,0 +1,71 @@
+{
+  "api_app_id": "api-app-id-0",
+  "authed_users": ["authed-user-0"],
+  "event_id": "event-id-3",
+  "event_time": 1525831523,
+  "team_id": "team-id-0",
+  "token": "token-0",
+  "type": "event_callback",
+  "event": {
+    "channel_id": "channel-id-0",
+    "event_ts": "1525831523.000079",
+    "item_user": "authed-user-0",
+    "pin_count": 4,
+    "pinned_info": {
+      "channel": "channel-id-0",
+      "pinned_by": "authed-user-0",
+      "pinned_ts": 1525831523
+    },
+    "type": "pin_added",
+    "user": "authed-user-0",
+    "item": {
+      "channel": "channel-id-0",
+      "created": 1525831523,
+      "created_by": "authed-user-0",
+      "message": {
+        "attachments": [
+          {
+            "fallback": "Medium: Less Repetition, More Dynamic Programming – basecs – Medium",
+            "fields": [
+              {
+                "short": true,
+                "title": "Reading time",
+                "value": "17 min read"
+              }
+            ],
+            "from_url": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "id": 1,
+            "image_bytes": 107733,
+            "image_height": 250,
+            "image_url": "https://cdn-images-1.medium.com/max/1200/1*Y1IuqrkoDWLlfz_BSaesGQ.jpeg",
+            "image_width": 500,
+            "original_url": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "service_icon": "https://cdn-images-1.medium.com/fit/c/304/304/1*5znAu_8mFN8Ihl4C2S0Bxw.jpeg",
+            "service_name": "Medium",
+            "text": "One of the running themes throughout this series has been the idea of making large, complex problems, which at first may seem super",
+            "title": "Less Repetition, More Dynamic Programming – basecs – Medium",
+            "title_link": "https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630",
+            "ts": 1508862529
+          },
+          {
+            "fallback": "600x400px image",
+            "from_url": "http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg",
+            "id": 2,
+            "image_bytes": 170025,
+            "image_height": 400,
+            "image_url": "http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg",
+            "image_width": 600,
+            "original_url": "http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg"
+          }
+        ],
+        "permalink": "https://bobross.fake-slack.com/archives/channel-id-0/p1525831511000182",
+        "pinned_to": ["channel-id-0"],
+        "text": "<https://medium.com/basecs/less-repetition-more-dynamic-programming-43d29830a630>\n<http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg>\nblah blah kowpkfwiq",
+        "ts": "1525831511.000182",
+        "type": "message",
+        "user": "authed-user-0"
+      },
+      "type": "message"
+    }
+  }
+}
