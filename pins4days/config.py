@@ -8,6 +8,8 @@ import lib.cloudstorage as gcs
 
 from constants import GCS_CONFIG_KEY_REMOTE
 from constants import GCS_CONFIG_KEY_LOCAL
+from constants import KEY_FLASK_APP_CONFIG
+from constants import KEY_FLASK_SECRET_KEY
 
 
 class AppConfig(object):
@@ -54,6 +56,9 @@ class AppConfig(object):
         self._build_config_file_path()
         self._write_local_config()
         self._load_config()
+        if not self._has_required_values():
+            raise InvalidConfigException(
+                'App config is missing required key/values.')
 
     def _load_config(self):
         """Loads the contents of the config file from GCS."""
@@ -61,6 +66,17 @@ class AppConfig(object):
         contents = gcs_file.read()
         gcs_file.close()
         self.contents = yaml.load(contents)
+
+    def _has_required_values(self):
+        app_config_keys = set([
+            'slack_client_id',
+            'slack_client_secret',
+            'slack_verification_token'
+        ])
+        top_level_keys = set([KEY_FLASK_APP_CONFIG, KEY_FLASK_SECRET_KEY])
+        return (top_level_keys.issubset(set(self.contents.keys())) and
+            app_config_keys.issubset(set(self.contents[KEY_FLASK_APP_CONFIG].keys())))
+
 
     def _build_config_file_path(self):
         """Builds the bucket location where the config file is located in GCS."""
@@ -77,3 +93,7 @@ class AppConfig(object):
                 gcs_file = gcs.open(self.file_path, 'w', content_type='text/plain')
                 gcs_file.write(content)
                 gcs_file.close()
+
+
+class InvalidConfigException(Exception):
+    pass

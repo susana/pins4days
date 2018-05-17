@@ -5,6 +5,7 @@ import unittest
 from google.appengine.ext import testbed
 
 from pins4days.config import AppConfig
+from pins4days.config import InvalidConfigException
 from pins4days.constants import GCS_CONFIG_KEY_REMOTE
 
 
@@ -37,3 +38,8 @@ class AppConfigTestCase(unittest.TestCase):
         }
         self.assertEquals(expected, app_config.contents)
         self.assertEquals('/app_default_bucket/configs/pins4days.yaml', app_config.file_path)
+
+    def test_invalid_config(self):
+        app_config = AppConfig(GCS_CONFIG_KEY_REMOTE, 'test/data/app_config_invalid.yaml')
+        with self.assertRaises(InvalidConfigException) as context:
+            app_config.load_config()
