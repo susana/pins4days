@@ -47,8 +47,8 @@ from pins4days.utils import load_config
 from pins4days.event import PinnedMessage
 from pins4days.models.pin import Pin
 from pins4days.models.user import User
-from pins4days.models.exceptions import EntityDoesNotExist
-from pins4days.models.exceptions import IncorrectPassword
+from pins4days.models.exceptions import EntityDoesNotExistException
+from pins4days.models.exceptions import IncorrectPasswordException
 from pins4days.appuser import AppUser
 
 
@@ -152,10 +152,10 @@ def handle_login_post(request):
         if app_user:
             login_user(app_user)
             return redirect(url_for('pins'), 302)
-    except EntityDoesNotExist as e:
+    except EntityDoesNotExistException as e:
         return make_response(
             render_template('login.html', error='E_ENTITY_DOES_NOT_EXIST'), 404)
-    except IncorrectPassword as e:
+    except IncorrectPasswordException as e:
         return make_response(
             render_template('login.html', error='E_INCORRECT_PASSWORD'), 400)
 

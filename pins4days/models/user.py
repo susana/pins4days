@@ -3,8 +3,8 @@
 from google.appengine.ext import ndb
 from lib.pybcrypt import bcrypt
 
-from exceptions import IncorrectPassword
-from exceptions import EntityDoesNotExist
+from exceptions import IncorrectPasswordException
+from exceptions import EntityDoesNotExistException
 
 
 class User(ndb.Model):
@@ -87,16 +87,16 @@ class User(ndb.Model):
             User:
 
         Raises:
-            EntityDoesNotExist: Thrown if the User does not exist.
-            IncorrectPassword: Thrown is the User exists but the wrong password
+            EntityDoesNotExistException: Thrown if the User does not exist.
+            IncorrectPasswordException: Thrown is the User exists but the wrong password
             is given.
         """
         user = cls.get_by_id(username)
         if user is None:
-            raise EntityDoesNotExist(
+            raise EntityDoesNotExistException(
                 "User with username '{}' does not exist.".format(username))
         stored_pw = user.password
         is_correct_pw = cls.compare_passwords(stored_pw, submitted_pw)
         if not is_correct_pw:
-            raise IncorrectPassword
+            raise IncorrectPasswordException
         return user
