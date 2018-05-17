@@ -2,9 +2,10 @@
 """General utility functions."""
 
 from config import AppConfig
+import os
 
-from pins4days.constants import GCS_CONFIG_KEY_REMOTE
-from pins4days.constants import GCS_CONFIG_KEY_LOCAL
+from pins4days.constants import LOCAL_APP_CONFIG_PATH_KEY
+from pins4days.constants import REMOTE_APP_CONFIG_PATH_KEY
 
 
 def load_config():
@@ -13,6 +14,8 @@ def load_config():
     Returns:
         dict: The Pins4Days config contents.
     """
-    config = AppConfig(GCS_CONFIG_KEY_REMOTE, GCS_CONFIG_KEY_LOCAL)
+    config = AppConfig(
+        os.environ[REMOTE_APP_CONFIG_PATH_KEY],
+        os.environ[LOCAL_APP_CONFIG_PATH_KEY])
     config.load_config()
     return config.contents

@@ -15,3 +15,7 @@ libraries:
     version: 2.6
   - name: werkzeug
     version: 0.11.10
+
+env_variables:
+  LOCAL_APP_CONFIG_PATH: 'dev/config.yaml'
+  REMOTE_APP_CONFIG_PATH: 'configs/pins4days.yaml'

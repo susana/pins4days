@@ -14,7 +14,7 @@ This app uses the following free tier GCP products:
 
 - Google App Engine (for hosting and serving the app, and using shared memcache for user sessions)
 - Google Cloud Datastore (for storing pins, attachments and users)
-- Google Cloud Storage (for storing the app config)
+- Google Cloud Storage (for storing the app config [Could also just use Datastore for this but I wanted to try out Cloud Storage. Subject to change :)])
 
 ### Installation
 

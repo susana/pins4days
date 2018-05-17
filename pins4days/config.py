@@ -6,8 +6,6 @@ import yaml
 from google.appengine.api import app_identity
 import lib.cloudstorage as gcs
 
-from constants import GCS_CONFIG_KEY_REMOTE
-from constants import GCS_CONFIG_KEY_LOCAL
 from constants import KEY_FLASK_APP_CONFIG
 from constants import KEY_FLASK_SECRET_KEY
 
@@ -22,9 +20,8 @@ class AppConfig(object):
         http://localhost:8000/blobstore
 
         Note that the local development server file location is dictated by
-        constants.GCS_CONFIG_KEY_LOCAL. This can be updated to suit your directory
-        structure. You'll probably want to add that file to your .gitignore,
-        especially if your config contains secrets.
+        LOCAL_APP_CONFIG_PATH defined in app.yaml. This can be updated to suit
+        your directory structure.
 
 
     Attributes:
