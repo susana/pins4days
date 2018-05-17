@@ -30,7 +30,7 @@ class AppConfig(object):
         file_path (str): The name of the REMOTE config file.
         remote_path (str): The path to the app config file in a REMOTE
         GCS bucket. This should not include the bucket name.
-        local_path (TYPE): The subpath to the app config YAML file in a LOCAL
+        local_path (str): The subpath to the app config YAML file in a LOCAL
         directory relative to the root of this app.
     """
 
