@@ -44,3 +44,4 @@ I know, there's a lot that can be improved. I'll get to it one day.
   - [x] create models/ dir
 - [ ] refactor templates (i.e. reuse general HTML structure: common header, containers, etc)
 - [ ] ⭐️ consider storing pins and deleting them as the pin events are sent from Slack to avoid ever hitting the 100 pin max
+- [ ] make this less ugly. like.. WAY less ugly. maybe play with React!
