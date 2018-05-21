@@ -2,9 +2,13 @@
 
 A Google App Engine (standard) app written in Python for gathering up and displaying in one place all the messages your team has ever pinned.
 
+Currently supports storing pin events in real time.
+
 **Why?**
 
 Because channels have a max of 100 pins and if you've taken up the strategy of simply moving to a new channel when that happens, you might care to see your pins in a single place, conveniently. :)
+
+Also, I wanted to try GCP! This was an excuse to do so.
 
 **What's it going to cost?**
 
@@ -30,10 +34,11 @@ python runner.py /usr/local/opt/google-cloud-sdk/ --test-path=test
 
 ### TODO
 
-I know, there's a lot that can be improved. I'll get to it one day.
+I know, there's a lot that needs to be implemented and can be improved. I'll get to it one day.
 
+- [ ] user permissions
 - [ ] make a Slack API [request](https://api.slack.com/methods/channels.list) to get channels, keep in mem, poll occasionally to update
-- [ ] read in and store existing pins from all channels
+- [ ] read in and store existing pins from all channels (utilize task queues)
 - [ ] tests
 - [x] docstrings
 - [ ] readme
