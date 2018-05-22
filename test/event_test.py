@@ -63,7 +63,7 @@ class PinnedMessageTestCase(DatastoreTestCase):
             self.pin_added_multi = json.load(f)
 
     def test_image_pin(self):
-        pin = PinnedMessage.factory(self.pin_added_image)
+        pin_key = PinnedMessage.factory(self.pin_added_image)
         expected = {
             'author_id': u'user-0',
             'pinner_id': u'authed-user-0',
@@ -79,13 +79,12 @@ class PinnedMessageTestCase(DatastoreTestCase):
                     'text': None
                 }
             ],
-            'attachments_ts': u'1525815858.000179'
+            'ts': u'1525815858.000179'
         }
-        self.assertDictEqual(expected, pin.to_dict())
-        self.assertEquals(expected, Pin.get_by_id(pin.key.id()).to_dict())
+        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
 
     def test_link_pin(self):
-        pin = PinnedMessage.factory(self.pin_added_link)
+        pin_key = PinnedMessage.factory(self.pin_added_link)
         expected = {
             'author_id': u'authed-user-0',
             'pinner_id': u'authed-user-0',
@@ -101,13 +100,12 @@ class PinnedMessageTestCase(DatastoreTestCase):
                     'text': u'One of the running themes throughout this series has been the idea of making large, complex problems, which at first may seem super \u2026'
                 }
             ],
-            'attachments_ts': u'1525829847.000217'
+            'ts': u'1525829847.000217'
         }
-        self.assertDictEqual(expected, pin.to_dict())
-        self.assertEquals(expected, Pin.get_by_id(pin.key.id()).to_dict())
+        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
 
     def test_message_pin(self):
-        pin = PinnedMessage.factory(self.pin_added_message)
+        pin_key = PinnedMessage.factory(self.pin_added_message)
         expected = {
             'author_id': u'user-0',
             'pinner_id': u'authed-user-0',
@@ -116,13 +114,12 @@ class PinnedMessageTestCase(DatastoreTestCase):
             'created_ts': 1525827355,
             'text': u"How do you make a round circle with a square knife? That's your challenge for the day.",
             'attachments': [],
-            'attachments_ts': "1525813275.000339"
+            'ts': "1525813275.000339"
         }
-        self.assertDictEqual(expected, pin.to_dict())
-        self.assertEquals(expected, Pin.get_by_id(pin.key.id()).to_dict())
+        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
 
     def test_multi_pin(self):
-        pin = PinnedMessage.factory(self.pin_added_multi)
+        pin_key = PinnedMessage.factory(self.pin_added_multi)
         expected = {
             'author_id': u'authed-user-0',
             'pinner_id': u'authed-user-0',
@@ -144,10 +141,9 @@ class PinnedMessageTestCase(DatastoreTestCase):
                     'text': None
                 }
             ],
-            'attachments_ts': u'1525831511.000182'
+            'ts': u'1525831511.000182'
         }
-        self.assertDictEqual(expected, pin.to_dict())
-        self.assertEquals(expected, Pin.get_by_id(pin.key.id()).to_dict())
+        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
 
 
 if __name__ == '__main__':

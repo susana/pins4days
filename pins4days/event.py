@@ -26,20 +26,35 @@ class PinnedMessage(object):
         Returns:
             pins4days.models.pin.Pin: A Pin model.
         """
-        message = event['event']['item']['message']
-        pinned_info = event['event']['pinned_info']
-        attachments = message['attachments'] if 'attachments' in message else []
-        attachment_entities = [MessageAttachment.factory(a) for a in attachments]
-        pin = Pin(
-            text=message['text'],
-            author_id=message['user'],
-            pinner_id=pinned_info['pinned_by'],
-            channel_id=pinned_info['channel'],
-            pinned_ts=pinned_info['pinned_ts'],
-            created_ts=event['event']['item']['created'],
-            attachments=attachment_entities,
-            attachments_ts=message['ts'])
-        pin.put()
+        if event['type'] == 'event_callback':
+            message = event['event']['item']['message']
+            pinned_info = event['event']['pinned_info']
+            attachments = message['attachments'] if 'attachments' in message else []
+            attachment_entities = [MessageAttachment.factory(a) for a in attachments]
+            pin = Pin.create(
+                text=message['text'],
+                author_id=message['user'],
+                pinner_id=pinned_info['pinned_by'],
+                channel_id=pinned_info['channel'],
+                pinned_ts=pinned_info['pinned_ts'],
+                created_ts=event['event']['item']['created'],
+                attachments=attachment_entities,
+                ts=message['ts'])
+        elif event['type'] == 'message':
+            message = event['message']
+            attachments = message['attachments'] if 'attachments' in message else []
+            attachment_entities = [MessageAttachment.factory(a) for a in attachments]
+            pin = Pin.create(
+                text=message['text'],
+                author_id=message['user'],
+                pinner_id=event['created_by'],
+                channel_id=event['channel'],
+                pinned_ts=None,
+                created_ts=event['created'],
+                attachments=attachment_entities,
+                ts=message['ts'])
+        else:
+            raise NotImplementedError('Slack resource of type "{}" unrecognized'.format(event['type']))
         return pin
 
 

@@ -99,7 +99,7 @@ def signup():
     username = request.form['username']
     password = request.form['password']
 
-    User.init_with_encryption(id=username, password=password)
+    User.create_with_encryption(id=username, password=password)
     return redirect(url_for('login'))
 
 

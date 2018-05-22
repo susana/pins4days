@@ -39,7 +39,6 @@ class Pin(ndb.Model):
     Attributes:
         attachments (StructuredProperty): A series of attachments associated
         with the image. Could be images, links, etc.
-        attachments_ts (IntegerProperty): Timestamp of when the attachments were created.
         author_id (StringProperty): User ID of the person who authored the message.
         channel_id (StringProperty): ID of the channel that the message was pinned in.
         created_ts (IntegerProperty): (Todo: verify) Timestamp of when the message was
@@ -47,6 +46,7 @@ class Pin(ndb.Model):
         pinned_ts (IntegerProperty): Timestamp of when the message was pinned.
         pinner_id (StringProperty): ID of the user that pinned the message.
         text (TextProperty): Pinned message's text.
+        ts (StringProperty):
     """
 
     text = ndb.TextProperty('tx')
@@ -56,7 +56,36 @@ class Pin(ndb.Model):
     pinned_ts = ndb.IntegerProperty('pts')
     created_ts = ndb.IntegerProperty('cts')
     attachments = ndb.StructuredProperty(Attachment, name='a', repeated=True)
-    attachments_ts = ndb.StringProperty('ats') # ts along with the channel idcan be used to recreate the permalink
+    ts = ndb.StringProperty('ts') # ts along with the channel id can be used to recreate the permalink
+
+    @staticmethod
+    def build_key_id(channel_id, ts):
+        """Creates the unique Pin ID which is based on the channel id and
+        creation timestamp which is sent as a float cast as a string.
+
+        Args:
+            channel_id (string): The channel the message originated from.
+            ts (string): Creation timestamp as a float cast to a string.
+
+        Returns:
+            Key:
+        """
+        return '_'.join([channel_id, ts])
+
+    @classmethod
+    def create(cls, **kwargs):
+        """Creates a Pin in the database.
+
+        Args:
+            **kwargs: The Pin properties.
+
+        Returns:
+            Key: If the Pin already exists, the key for that Pin is returned.
+        """
+        key_id = Pin.build_key_id(kwargs['channel_id'], kwargs['ts'])
+        kwargs['id'] = key_id
+        pin = cls(**kwargs)
+        return pin.put()
 
     @classmethod
     def query_user(cls, user_id):
@@ -67,7 +96,7 @@ class Pin(ndb.Model):
             user_id (str): The user's Slack ID.
 
         Returns:
-            Query:
+            Query
         """
         return cls.query(getattr(Pin, 'author_id') == user_id).order(-cls.created_ts)
 
@@ -77,6 +106,6 @@ class Pin(ndb.Model):
         order.
 
         Returns:
-            Query:
+            Query
         """
         return cls.query().order(-cls.created_ts)

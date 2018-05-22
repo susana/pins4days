@@ -13,7 +13,7 @@ class User(ndb.Model):
 
     Attributes:
         password (StringProperty): The user's password. ENCRYPT BEFORE STORING!
-        See User.encrypt_password() and User.init_with_encryption().
+        See User.encrypt_password() and User.create_with_encryption().
     """
 
     # The User entity's key.id is set to the username to maintain unique
@@ -48,7 +48,7 @@ class User(ndb.Model):
         return bcrypt.hashpw(password, bcrypt.gensalt())
 
     @classmethod
-    def init_with_encryption(cls, **kwargs):
+    def create_with_encryption(cls, **kwargs):
         """Creates a new User, including encrypting their password, if that
         User doesn't already exist. Otherwise, does nothing.
 
