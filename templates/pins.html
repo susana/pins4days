@@ -9,11 +9,14 @@
      <div class="pagetitle">
        <h1>Pins 4 Days</h1>
      </div>
+     <div>
+       <button><a href="{{ next_url }}">next page</a></button>
+     </div>
      <ul id="main" class="pin-container">
       <h3>Hay {{ username }}.</h3>
       {% for pin in pins %}
         <li>
-          {# <p>{{ pin.author_id }}: {{ pin.text }}</p> #}
+          <p>{# {{ pin.author_id }} #}: {{ pin.text }}</p>
           {# <p>pinned by {{ pin.author_id }}</p> #}
           <p>in channel {{ pin.channel_id }}</p>
           <ul>
@@ -27,6 +30,9 @@
         </li>
       {% endfor %}
      </ul>
+     <div>
+       <button><a href="{{ next_url }}">next page</a></button>
+     </div>
    </div>
  </body>
 </html>

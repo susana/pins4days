@@ -27,6 +27,7 @@ Todo:
 """
 
 import logging
+import json
 
 from flask import Flask
 from flask import request
@@ -40,10 +41,13 @@ from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user
 from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.urls import Href
+from google.appengine.api import taskqueue
 
 from pins4days.constants import KEY_FLASK_APP_CONFIG
 from pins4days.constants import KEY_FLASK_SECRET_KEY
 from pins4days.utils import load_config
+from pins4days.utils import get_channel_pins
 from pins4days.event import PinnedMessage
 from pins4days.models.pin import Pin
 from pins4days.models.user import User
@@ -183,10 +187,16 @@ def pins():
         TYPE: Description
     """
     username = current_user.username
+    limit = request.args.get('limit', 10)
+    page = int(request.args.get('page', 1))
+    offset = page * limit
+    href = Href(url_for('pins'))
+    next_url = href({'page': page + 1})
     return render_template(
         'pins.html',
         username=username,
-        pins=Pin.query_all().fetch(10))
+        next_url=next_url,
+        pins=Pin.query_all().fetch(limit, offset=offset))
 
 
 @app.route('/api/pins', methods=['POST', 'GET'])
@@ -202,6 +212,21 @@ def api_pins():
         return handle_api_pins_post(request)
     elif request.method == 'GET':
         return handle_api_pins_get(request)
+
+
+@app.route('/channels/<channel_id>/pins/enqueue', methods=['GET'])
+@login_required
+def channels_pins_enqueue(channel_id):
+    if request.method == 'GET':
+        resp = get_channel_pins(channel_id, app.config['slack_user_token'])
+        pins = resp['items']
+        for pin in pins:
+            task = taskqueue.add(
+                url='/worker/create_pin',
+                target='worker',
+                payload=json.dumps(pin),
+                method='POST')
+        return make_response('', 200)
 
 
 def handle_api_pins_post(request):
