@@ -74,18 +74,17 @@ class Pin(ndb.Model):
 
     @classmethod
     def create(cls, **kwargs):
-        """Creates a Pin in the database.
+        """Creates an instance of Pin but does not insert it into the DB.
 
         Args:
             **kwargs: The Pin properties.
 
         Returns:
-            Key: If the Pin already exists, the key for that Pin is returned.
+            Pin
         """
         key_id = Pin.build_key_id(kwargs['channel_id'], kwargs['ts'])
         kwargs['id'] = key_id
-        pin = cls(**kwargs)
-        return pin.put()
+        return cls(**kwargs)
 
     @classmethod
     def query_user(cls, user_id):

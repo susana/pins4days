@@ -255,7 +255,8 @@ def handle_api_pins_post(request):
         challenge = json['challenge']
         return jsonify(challenge=challenge)
 
-    PinnedMessage.factory(json)
+    pin = PinnedMessage.factory(json)
+    pin.put()
     return make_response('', 201)
 
 

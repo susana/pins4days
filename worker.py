@@ -21,5 +21,6 @@ def create_pin():
         Response:
     """
     pin_data = json.loads(request.data)
-    PinnedMessage.factory(pin_data)
+    pin = PinnedMessage.factory(pin_data)
+    pin.put()
     return make_response('', 201)

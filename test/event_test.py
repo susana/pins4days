@@ -63,7 +63,7 @@ class PinnedMessageTestCase(DatastoreTestCase):
             self.pin_added_multi = json.load(f)
 
     def test_image_pin(self):
-        pin_key = PinnedMessage.factory(self.pin_added_image)
+        pin = PinnedMessage.factory(self.pin_added_image)
         expected = {
             'author_id': u'user-0',
             'pinner_id': u'authed-user-0',
@@ -81,10 +81,11 @@ class PinnedMessageTestCase(DatastoreTestCase):
             ],
             'ts': u'1525815858.000179'
         }
-        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
+        self.assertEquals('pinned-to-0_1525815858.000179', pin.key.id())
+        self.assertDictEqual(expected, pin.to_dict())
 
     def test_link_pin(self):
-        pin_key = PinnedMessage.factory(self.pin_added_link)
+        pin = PinnedMessage.factory(self.pin_added_link)
         expected = {
             'author_id': u'authed-user-0',
             'pinner_id': u'authed-user-0',
@@ -102,10 +103,11 @@ class PinnedMessageTestCase(DatastoreTestCase):
             ],
             'ts': u'1525829847.000217'
         }
-        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
+        self.assertEquals('channel-id-0_1525829847.000217', pin.key.id())
+        self.assertDictEqual(expected, pin.to_dict())
 
     def test_message_pin(self):
-        pin_key = PinnedMessage.factory(self.pin_added_message)
+        pin = PinnedMessage.factory(self.pin_added_message)
         expected = {
             'author_id': u'user-0',
             'pinner_id': u'authed-user-0',
@@ -116,10 +118,11 @@ class PinnedMessageTestCase(DatastoreTestCase):
             'attachments': [],
             'ts': "1525813275.000339"
         }
-        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
+        self.assertEquals('pinned-to-0_1525813275.000339', pin.key.id())
+        self.assertDictEqual(expected, pin.to_dict())
 
     def test_multi_pin(self):
-        pin_key = PinnedMessage.factory(self.pin_added_multi)
+        pin = PinnedMessage.factory(self.pin_added_multi)
         expected = {
             'author_id': u'authed-user-0',
             'pinner_id': u'authed-user-0',
@@ -143,7 +146,8 @@ class PinnedMessageTestCase(DatastoreTestCase):
             ],
             'ts': u'1525831511.000182'
         }
-        self.assertDictEqual(expected, Pin.get_by_id(pin_key.id()).to_dict())
+        self.assertEquals('channel-id-0_1525831511.000182', pin.key.id())
+        self.assertDictEqual(expected, pin.to_dict())
 
 
 if __name__ == '__main__':
