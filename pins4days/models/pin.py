@@ -13,7 +13,7 @@ class Attachment(ndb.Model):
     "Although the Address instances are defined using the same syntax as for
     model classes, they are not full-fledged entities. They don't have their
     own keys in Cloud Datastore. They cannot be retrieved independently of
-    the Contact entity to which they belong.""
+    the Contact entity to which they belong."
 
     Attributes:
         from_url (StringProperty):
