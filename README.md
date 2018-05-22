@@ -37,11 +37,11 @@ python runner.py /usr/local/opt/google-cloud-sdk/ --test-path=test
 I know, there's a lot that needs to be implemented and can be improved. I'll get to it one day.
 
 - [ ] user permissions
-- [ ] make a Slack API [request](https://api.slack.com/methods/channels.list) to get channels, keep in mem, poll occasionally to update
-- [ ] read in and store existing pins from all channels (utilize task queues)
+- [ ] make a Slack API [request](https://api.slack.com/methods/channels.list) to get channels (specifically for getting the names), keep in mem, poll occasionally to update
+- [x] read in and store existing pins from all channels (utilize task queues)
 - [ ] tests
 - [x] docstrings
-- [ ] readme
+- [x] readme
 - [ ] auth for api endpoint
 - [ ] log out
 - [ ] update dir structure
