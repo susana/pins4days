@@ -189,7 +189,7 @@ def pins():
     username = current_user.username
     limit = request.args.get('limit', 10)
     page = int(request.args.get('page', 1))
-    offset = page * limit
+    offset = (page - 1) * limit
     href = Href(url_for('pins'))
     next_url = href({'page': page + 1})
     return render_template(
