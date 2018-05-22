@@ -84,7 +84,7 @@ class User(ndb.Model):
             username.
 
         Returns:
-            User:
+            Key:
 
         Raises:
             EntityDoesNotExistException: Thrown if the User does not exist.
